@@ -14,6 +14,7 @@ shinyUI(fluidPage(
 
   # Application title
   titlePanel("Response Driven Campaign Planner"),
+  p('GPL3 license, no warranty'),
   p('Source code:'),
   a("https://github.com/WinVector/CampaignPlanner",
     href="https://github.com/WinVector/CampaignPlanner"),
