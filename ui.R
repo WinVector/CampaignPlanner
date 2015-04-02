@@ -13,8 +13,15 @@ source("functions.R")
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("Campaign Evaluator"),
-
+  titlePanel("Response Driven Campaign Planner"),
+  p('Source code:'),
+  a("https://github.com/WinVector/CampaignPlanner",
+    href="https://github.com/WinVector/CampaignPlanner"),
+  p("Online version:"),
+  a("https://win-vector.shinyapps.io/CampaignPlanner/",
+    href="https://win-vector.shinyapps.io/CampaignPlanner/"),
+  
+  
   # Input
   verticalLayout(
     inputPanel(
@@ -94,7 +101,6 @@ the chosen relative error, with confidence 1 - chosen Error Probability.")
 
     # Output
     mainPanel(
-      
       # plan campaign: has both input and output
       conditionalPanel(condition="input.panelchooser=='plan'",
                        
