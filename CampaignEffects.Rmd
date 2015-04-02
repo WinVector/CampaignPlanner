@@ -1,0 +1,82 @@
+---
+title: "CampaignEffects"
+author: "John Mount"
+date: "March 24, 2015"
+output: html_document
+---
+
+```{r}
+source('functions.R')
+```
+
+```{r}
+# use case 1: user enters two success probability estimates, two success valuations
+# and optionally overrides errorProbability, and relativeError
+# we compute an experiment plan and show a typical expected outcome
+tabExperiment <- data.frame(
+  Label=c('campaign1','campaign2'),
+  Probability=c(0.05,0.025),
+  ValueSuccess=c(2,3))
+errorProbability=0.05
+relativeError=0.2
+# end of user input
+
+tabExperiment$expectedValue <- tabExperiment$Probability*tabExperiment$ValueSuccess
+print(tabExperiment)
+sizes <- heuristicPowerPlan(tabExperiment)
+print(sizes)
+tabTypical <- typicalTable(tabExperiment,sizes)
+print(tabTypical)
+tabGraphs <- sampleGraph(tabExperiment,sizes)
+plotSample(tabGraphs)
+computeProbsGES(tabExperiment,tabGraphs)
+g2 = build2dProbGraph(tabGraphs,'campaign1','campaign2')
+ggplot() + 
+  geom_contour(data=g2,aes(x=v1,y=v2,z=d)) + 
+  xlab('campaign1') + ylab('campaign2') +
+  geom_abline(slope=1) + coord_fixed() + expand_limits(x = 0, y = 0)
+```
+
+
+
+
+```{r}
+# use case 2: user enters an experiment result
+tabValue <- data.frame(Label=c('Campaign$2','Campaign$4'),
+                  Actions=c(10000,10000),
+                  Successes=c(412,255),
+                  ValueSuccess=c(2,4))
+# end of user input
+tabValue$Probability <- tabValue$Successes/tabValue$Actions
+tabValue$expectedValue <- tabValue$Probability*tabValue$ValueSuccess
+print(tabValue)
+valueGraphs <- posteriorGraph(tabValue)
+plotPosterior(valueGraphs)
+computeProbsGEP(tabValue,valueGraphs$graph)
+g = build2dProbGraph(valueGraphs$graph,'Campaign$2','Campaign$4')
+ggplot() + 
+  geom_contour(data=g,aes(x=v1,y=v2,z=d)) + 
+  xlab('Campaign$2') + ylab('Campaign$4') +
+  geom_abline(slope=1) + coord_fixed() + expand_limits(x = 0, y = 0)
+```
+
+
+```{r}
+# stacked example
+tabValue <- data.frame(Label=c('Campaign1','Campaign2'),
+                  Actions=c(10,10),
+                  Successes=c(1,1),
+                  ValueSuccess=c(1,1))
+# end of user input
+tabValue$Probability <- tabValue$Successes/tabValue$Actions
+tabValue$expectedValue <- tabValue$Probability*tabValue$ValueSuccess
+print(tabValue)
+valueGraphs <- posteriorGraph(tabValue)
+plotPosterior(valueGraphs)
+computeProbsGEP(tabValue,valueGraphs$graph)
+g = build2dProbGraph(valueGraphs$graph,'Campaign1','Campaign2')
+ggplot() + 
+  geom_contour(data=g,aes(x=v1,y=v2,z=d)) + 
+  xlab('Campaign1') + ylab('Campaign2') +
+  geom_abline(slope=1) + coord_fixed() + expand_limits(x = 0, y = 0)
+```
