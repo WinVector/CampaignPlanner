@@ -81,3 +81,20 @@ ggplot() +
   xlab('Campaign1') + ylab('Campaign2') +
   geom_abline(slope=1) + coord_fixed() + expand_limits(x = 0, y = 0)
 ```
+
+```{r}
+# edge case 100% conversion
+tabValue <- data.frame(Label=c('Campaign1','Campaign2'),
+                  Actions=c(1,1),
+                  Successes=c(0,1),
+                  ValueSuccess=c(1,1))
+print(tabValue)
+valueGraphs <- posteriorGraph(tabValue)
+plotPosterior(valueGraphs)
+computeProbsGEP(tabValue,valueGraphs$graph)
+g = build2dProbGraph(valueGraphs$graph,'Campaign1','Campaign2')
+ggplot() + 
+  geom_contour(data=g,aes(x=v1,y=v2,z=d)) + 
+  xlab('Campaign1') + ylab('Campaign2') +
+  geom_abline(slope=1) + coord_fixed() + expand_limits(x = 0, y = 0)
+```

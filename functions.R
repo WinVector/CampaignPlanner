@@ -149,7 +149,11 @@ posteriorGraph <- function(tab,epsilon=1.0e-4) {
     p <- rbind(p,pi)
     medIntensity <- qbeta(0.5,shape1=ai,shape2=bi)
     meanIntensity <- (ai/(ai+bi))
-    modeIntensity <- ((ai-1)/(ai+bi-2))
+    if((ai>1)&&(bi>1)) {
+      modeIntensity <- ((ai-1)/(ai+bi-2))
+    } else {
+      modeIntensity <- pi$value[which.max(pi$density)]
+    }
     si <- data.frame(median=medIntensity*tab$ValueSuccess[i],
                      mean=meanIntensity*tab$ValueSuccess[i],
                      mode=modeIntensity*tab$ValueSuccess[i],
