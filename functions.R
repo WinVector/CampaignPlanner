@@ -157,6 +157,14 @@ posteriorGraph <- function(tab,epsilon=1.0e-4) {
     pi <- data.frame(density=dbeta(intensities,shape1=ai,shape2=bi)/tab$ValueSuccess[i],
                      value=intensities*tab$ValueSuccess[i],
                      Label=tab$Label[i])
+    # replace infinities with notionally large numbers (makes certain graphs not degenerate)
+    infiniteIndices <- is.infinite(pi$density)
+    maxFinite <- max(pi$density[!infiniteIndices])
+    pi$density[infiniteIndices] <- 2*maxFinite + 1
+    # replace zero probabilities with very low value (Cromwell's rule type smoothing idea, 
+    # with the Jeffreys prior should only happen at intensity = 0,1
+    minPos <- min(pi$density[pi$density>0])
+    pi$density <- pmax(pi$density,1.0e-8*minPos)
     p <- rbind(p,pi)
     medIntensity <- qbeta(0.5,shape1=ai,shape2=bi)
     meanIntensity <- (ai/(ai+bi))
