@@ -34,27 +34,27 @@ typicalTable <- function(valueTab,sizes) {
 # valueTab: table with at least columns (Label,Probability,ValueSuccess)
 sampleGraph <- function(tab,sizes,epsilon=1.0e-3) {
   sList <- lapply(seq_len(nrow(tab)),
-                          function(i) {
-                            lowWater <- max(0,floor(qbinom(epsilon,
-                                                           size=sizes[i],
-                                                           prob=tab$Probability[i])))
-                            highWater <- min(sizes[i],ceiling(qbinom(1.0-epsilon,
-                                                                     size=sizes[i],
-                                                                     prob=tab$Probability[i])))
-                            if(highWater-lowWater>500) {
-                                counts <- sort(unique(round(seq(lowWater,highWater,length.out=201))))
-                            } else {
-                                counts <- lowWater:highWater
-                            }
-                            nc <- length(counts)
-                            # successes observed
-                            probs <- dbinom(counts,
-                                            size=sizes[i],
-                                            prob=tab$Probability[i])
-                            data.frame(density=sizes[i]*probs/tab$ValueSuccess[i],
-                                       value=counts*tab$ValueSuccess[i]/sizes[i],
-                                       Label=tab$Label[i])
-                          })
+    function(i) {
+      lowWater <- max(0,floor(qbinom(epsilon,
+                                     size=sizes[i],
+                                     prob=tab$Probability[i])))
+      highWater <- min(sizes[i],ceiling(qbinom(1.0-epsilon,
+                                               size=sizes[i],
+                                               prob=tab$Probability[i])))
+      if(highWater-lowWater>500) {
+        counts <- sort(unique(round(seq(lowWater,highWater,length.out=401))))
+      } else {
+        counts <- lowWater:highWater
+      }
+      nc <- length(counts)
+      # successes observed
+      probs <- dbinom(counts,
+                      size=sizes[i],
+                      prob=tab$Probability[i])
+      data.frame(density=sizes[i]*probs/tab$ValueSuccess[i],
+                 value=counts*tab$ValueSuccess[i]/sizes[i],
+                 Label=tab$Label[i])
+    })
   do.call('rbind',sList)
 }
 
@@ -110,6 +110,9 @@ wQuantile <- function(values,weights,cut) {
   if(cut>=1) {
     return(max(values))
   }
+  badIndices <- is.na(weights) | !is.finite(weights)
+  values <- values[!badIndices]
+  weights <- weights[!badIndices]
   perm <- order(values)
   values <- values[perm]
   weights <- weights[perm]
@@ -142,6 +145,14 @@ posteriorGraph <- function(tab,epsilon=1.0e-4) {
     bi <- 0.5 + tab$Actions[i] - tab$Successes[i]
     lowWater <- qbeta(epsilon,shape1=ai,shape2=bi)
     highWater <- qbeta(1-epsilon,shape1=ai,shape2=bi)
+    # if boundaries near 0/1, push them to 0/1
+    width <- highWater-lowWater
+    if(lowWater-width/4<=0) {
+      lowWater <- 0
+    }
+    if(highWater+width/4>=1) {
+      highWater <- 1
+    }
     intensities <- seq(lowWater,highWater,(highWater-lowWater)/201)
     pi <- data.frame(density=dbeta(intensities,shape1=ai,shape2=bi)/tab$ValueSuccess[i],
                      value=intensities*tab$ValueSuccess[i],
