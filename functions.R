@@ -125,13 +125,16 @@ wQuantile <- function(values,weights,cut) {
   values[idx]
 }
 
-plotSample <- function(g) {
-  ggplot() +
-    geom_line(data=g,aes(x=value,y=density,color=Label)) +
+plotSample <- function(g,size=2) {
+  g$Label <- as.factor(g$Label)
+  ggplot(data=g) +
+    geom_line(aes(x=value,y=density,color=Label,linetype=Label),size=size) +
+    geom_ribbon(aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.1) +
     xlab('Expected Value per Action (dollars)') +
     scale_x_continuous(limits = c(wQuantile(g$value,g$density,0.001),
                                   wQuantile(g$value,g$density,0.999))) +
-    ggtitle('distribution of possible outcomes')
+    ggtitle('distribution of possible outcomes') +
+    theme_bw()
 }
 
 # build detailed curves of posterior intensity estimates
@@ -185,16 +188,26 @@ posteriorGraph <- function(tab,epsilon=1.0e-4) {
   list(graph=p,summary=s)
 }
 
-plotPosterior <- function(p) {
-  ggplot() +
-    geom_line(data=p$graph,aes(x=value,y=density,color=Label)) +
+plotPosterior <- function(p,wishPrice=c(),size=2) {
+  p$graph$Label <- as.factor(p$graph$Label)
+  p$summary$Label <- as.factor(p$summary$Label)
+  plot <- ggplot() +
+    geom_line(data=p$graph,aes(x=value,y=density,color=Label,linetype=Label),size=size) +
+    geom_ribbon(data=p$graph,aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.1) +
     xlab('Action To Success Value (dollars)') +
     geom_vline(data=p$summary,aes(xintercept=median,color=Label)) +
     geom_point(data=p$summary,aes(x=mean,y=meanY,color=Label),shape=3) +
-    geom_point(data=p$summary,aes(x=mode,y=modeY,color=Label),sahpe=2) +
+    geom_point(data=p$summary,aes(x=mode,y=modeY,color=Label),shape=2) +
     scale_x_continuous(limits = c(wQuantile(p$graph$value,p$graph$density,0.001),
                                   wQuantile(p$graph$value,p$graph$density,0.999))) +
-    ggtitle('Bayesian posterior action to success value estimates')
+    ggtitle('Bayesian posterior action to success value estimates') +
+    theme_bw()
+  if(!is.null(wishPrice)) {
+    pAbove <- p$graph[p$graph$value>=wishPrice,,drop=FALSE]
+    plot <- plot + geom_vline(xintercept=wishPrice,linetype=2) +
+      geom_ribbon(data=pAbove,aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.5)
+  }
+  plot
 }
 
 # given a single outcome plot posterior probabilities of unknown intensities

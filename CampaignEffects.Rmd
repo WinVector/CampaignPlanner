@@ -92,3 +92,15 @@ print(tabValue)
 valueGraphs <- posteriorGraph(tabValue)
 plotPosterior(valueGraphs)
 ```
+
+
+```{r}
+# nice example plot
+tabValue <- data.frame(Label=c('Campaign1','Campaign2'),
+                  Actions=c(100,100),
+                  Successes=c(1,2),
+                  ValueSuccess=c(2,1))
+print(tabValue)
+valueGraphs <- posteriorGraph(tabValue)
+plotPosterior(valueGraphs,0.05)
+```

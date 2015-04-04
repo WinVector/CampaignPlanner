@@ -95,8 +95,7 @@ shinyServer(function(input, output) {
   pgraph2 = reactive(posteriorGraph(resTable()))
 
   output$resTable = renderPrint(resTable())
-  output$planGraph2 = renderPlot(plotPosterior(pgraph2())+
-                                   geom_vline(xintercept=input$wishPrice,linetype=2))
+  output$planGraph2 = renderPlot(plotPosterior(pgraph2(),input$wishPrice))
   output$probTable2 = renderPrint(computeProbsGEP(resTable(),pgraph2()$graph))
 
 })
