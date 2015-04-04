@@ -203,9 +203,12 @@ plotPosterior <- function(p,wishPrice=c(),size=2) {
     ggtitle('Bayesian posterior action to success value estimates') +
     theme_bw()
   if(!is.null(wishPrice)) {
-    pAbove <- p$graph[p$graph$value>=wishPrice,,drop=FALSE]
-    plot <- plot + geom_vline(xintercept=wishPrice,linetype=2) +
-      geom_ribbon(data=pAbove,aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.5)
+    shadeRows <- p$graph$value>=wishPrice
+    if(sum(shadeRows)>0) {
+       pAbove <- p$graph[shadeRows,,drop=FALSE]
+       plot <- plot + geom_vline(xintercept=wishPrice,linetype=2) +
+         geom_ribbon(data=pAbove,aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.5)
+    }
   }
   plot
 }

@@ -102,5 +102,5 @@ tabValue <- data.frame(Label=c('Campaign1','Campaign2'),
                   ValueSuccess=c(2,1))
 print(tabValue)
 valueGraphs <- posteriorGraph(tabValue)
-plotPosterior(valueGraphs,0.05)
+plotPosterior(valueGraphs,0.05,size=10)
 ```
