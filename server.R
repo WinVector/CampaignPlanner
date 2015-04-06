@@ -14,7 +14,7 @@ makeTypicalTable = function(planTable, sizes, dummy) {
   dummy  # cause dummy promise to be evaluated (and trigger recalc)
   ptab = typicalTable(planTable, sizes)
   if(sum(sizes) > 0) {
-    ptab$expectedSuccessRate = with(ptab, Successes/Actions)
+    ptab$expectedSuccessRate = with(ptab, (Successes+0.5)/(Actions+1)) # posteriors from Jeffrey prior
     ptab$expectedValuePerAction = ptab$expectedSuccessRate*planTable$ValueSuccess
   }
   ptab
@@ -40,7 +40,7 @@ assembleResultTable = function(actions, successes, values, wishPrice) {
              Actions=actions,
              Successes=successes,
              ValueSuccess=values)
-  ptab$observedSuccessRate = successes/actions
+  ptab$observedSuccessRate = (successes+0.5)/(actions+1) #  posterior Jeffreys prior 0.5,0.5 smoothing
   ptab$observedValuePerAction = ptab$observedSuccessRate*values
   ptab$pAboveWishPrice = pbeta(wishPrice/values,
                                shape1=0.5+successes,

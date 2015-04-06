@@ -160,7 +160,7 @@ posteriorGraph <- function(tab,epsilon=1.0e-4) {
     pi$density <- pmax(pi$density,1.0e-8*minPos)
     p <- rbind(p,pi)
     medIntensity <- qbeta(0.5,shape1=ai,shape2=bi)
-    meanIntensity <- (ai/(ai+bi))
+    meanIntensity <- ai/(ai+bi)
     if((ai>1)&&(bi>1)) {
       modeIntensity <- ((ai-1)/(ai+bi-2))
     } else {
