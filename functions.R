@@ -76,18 +76,18 @@ computeProbsGES <- function(planTab,p) {
     e2 <- planTab$e[planTab$Label==d2]
     absE <- abs(e1-e2)
     totProb <- 0
-    totInd <- 0
+    totIndGT <- 0
+    totIndGE <- 0
     for(i1 in 1:nrow(g1)) {
       probii <- g1[i1,'density']*g2[,'density']
-      condii <- g1[i1,'value']>=g2[,'value']
       totProb <- totProb + sum(probii)
-      totInd <- totInd + sum(ifelse(condii,probii,0))
+      totIndGT <- totIndGT + sum(ifelse(g1[i1,'value']>g2[,'value'],probii,0))
+      totIndGE <- totIndGE + sum(ifelse(g1[i1,'value']>=g2[,'value'],probii,0))
     }
-    p1Greater2 <- totInd/totProb
     pG <- rbind(pG,data.frame(Deal1=d1,
                               Deal2=d2,
-                              p1Greater2=p1Greater2
-    ))
+                              p1gt2=totIndGT/totProb,
+                              p1ge2=totIndGE/totProb))
   }
   pG
 }
