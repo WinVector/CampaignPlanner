@@ -61,7 +61,7 @@ sampleGraph <- function(tab,sizes,epsilon=1.0e-3) {
 # given a single intensity plot possible observations
 # planTab: table with at least columns (Label,Probability,ValueSuccess)
 # p: sampleGraph(planTab)
-computeProbsGES <- function(planTab,p,computeLoss=FALSE) {
+computeProbsGES <- function(planTab,p) {
   # compute some odds
   planTab$e <- planTab$Probability*planTab$ValueSuccess
   deals <- sort(unique(p$Label))
@@ -74,30 +74,20 @@ computeProbsGES <- function(planTab,p,computeLoss=FALSE) {
     g2 <- p[p$Label==d2,,drop=FALSE]
     e1 <- planTab$e[planTab$Label==d1]
     e2 <- planTab$e[planTab$Label==d2]
-    oneBest <- e1>=e2
     absE <- abs(e1-e2)
     totProb <- 0
     totInd <- 0
-    totLoss <- 0
     for(i1 in 1:nrow(g1)) {
       probii <- g1[i1,'density']*g2[,'density']
       condii <- g1[i1,'value']>=g2[,'value']
-      # idea for loass is: each time the wrong campaign seems best
-      # we lose the ideal difference in expecations
-      lossii <- ifelse(condii==oneBest,0,absE)
-      totLoss <- totLoss + sum(lossii*probii)
       totProb <- totProb + sum(probii)
       totInd <- totInd + sum(ifelse(condii,probii,0))
     }
     p1Greater2 <- totInd/totProb
-    campaignSwitchExposure <- totLoss/totProb
     pG <- rbind(pG,data.frame(Deal1=d1,
                               Deal2=d2,
                               p1Greater2=p1Greater2
     ))
-    if(computeLoss) {
-      pG$campaignSwitchExposure=campaignSwitchExposure
-    }
   }
   pG
 }
@@ -216,7 +206,7 @@ plotPosterior <- function(p,wishPrice=c(),size=2) {
 # given a single outcome plot posterior probabilities of unknown intensities
 # tab: an experiment table with our standard columns (Label,Actions,Successes,ValueSuccess)
 # p: posteriorGraph(tab)
-computeProbsGEP <- function(tab,p,computeLoss=TRUE) {
+computeProbsGEP <- function(tab,p) {
   # compute some odds
   tab$e <- tab$Successes*tab$ValueSuccess/tab$Actions
   deals <- sort(unique(p$Label))
@@ -229,29 +219,19 @@ computeProbsGEP <- function(tab,p,computeLoss=TRUE) {
     g2 <- p[p$Label==d2,,drop=FALSE]
     e1 <- tab$e[tab$Label==d1]
     e2 <- tab$e[tab$Label==d2]
-    oneBest <- e1>=e2
     totProb <- 0
     totInd <- 0
-    totLoss <- 0
     for(i1 in 1:nrow(g1)) {
       probii <- g1[i1,'density']*g2[,'density']
       condii <- g1[i1,'value']>=g2[,'value']
       totProb <- totProb + sum(probii)
       totInd <- totInd + sum(ifelse(condii,probii,0))
-      # idea for loss is: each time the unknown intensity of the unchosen
-      # campaign is not the highest we lose the current difference.
-      lossii <- ifelse(condii==oneBest,0,abs(g1[i1,'value']-g2[,'value']))
-      totLoss <- totLoss + sum(lossii*probii)
     }
     p1Greater2 <- totInd/totProb
-    expectedDecisionLoss <- totLoss/totProb
-     pG <- rbind(pG,data.frame(Deal1=d1,
+    pG <- rbind(pG,data.frame(Deal1=d1,
                               Deal2=d2,
                               p1Greater2=p1Greater2
                               ))
-    if(computeLoss) {
-      pG$expectedDecisionLoss=expectedDecisionLoss
-    }
   }
   pG
 }
