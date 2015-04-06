@@ -104,3 +104,21 @@ print(tabValue)
 valueGraphs <- posteriorGraph(tabValue)
 plotPosterior(valueGraphs,0.05,size=10)
 ```
+
+```{r}
+# corner case plot to check
+```{r}
+# use case 1: user enters two success probability estimates, two success valuations
+# and optionally overrides errorProbability, and relativeError
+# we compute an experiment plan and show a typical expected outcome
+planTab <- data.frame(
+  Label=c('campaign1','campaign2'),
+  Probability=c(0.01,0.01),
+  ValueSuccess=c(1,1))
+errorProbability=0.05
+relativeError=0.2
+# end of user input
+
+p <- sampleGraph(planTab,c(100,100))
+computeProbsGES(planTab,p)
+```
