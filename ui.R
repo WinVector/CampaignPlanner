@@ -14,12 +14,12 @@ shinyUI(fluidPage(
 
   # Application title
   titlePanel("Response Driven Campaign Planner"),
-  p('GPL3 license, no warranty'),
-  p('Source code:'),
-  a("https://github.com/WinVector/CampaignPlanner/",
+  a("(paid) Video training course:",
+    href="https://www.udemy.com/campaign-response-testing/"),
+  p('This sheet: GPL3 license, no warranty'),
+  a("Source code: GitHub Win/Vector/CampaignPlanner/",
     href="https://github.com/WinVector/CampaignPlanner/"),
-  p("Online version:"),
-  a("https://win-vector.shinyapps.io/CampaignPlanner/",
+  a("Online version: win-vector.shinyapps.io/CampaignPlanner/",
     href="https://win-vector.shinyapps.io/CampaignPlanner/"),
   
   
