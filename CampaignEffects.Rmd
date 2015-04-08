@@ -7,6 +7,7 @@ output: html_document
 
 ```{r}
 library('ggplot2')
+library('xtable')
 source('functions.R')
 ```
 
@@ -101,8 +102,9 @@ tabValue <- data.frame(Label=c('Campaign1','Campaign2'),
                   Successes=c(1,2),
                   ValueSuccess=c(2,1))
 print(tabValue)
+print(xtable(tabValue),type='html')
 valueGraphs <- posteriorGraph(tabValue)
-plotPosterior(valueGraphs,0.05,size=10)
+plotPosterior(valueGraphs,0.05)
 ```
 
 ```{r}
