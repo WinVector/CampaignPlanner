@@ -34,7 +34,7 @@ shinyUI(fluidPage(
                   selected="plan"))),
 
       conditionalPanel(condition="input.panelchooser=='plan'",
-                       helpText("The purpose of the planning sheet is to use the user inputs (prior bounds on conversion rate and conversion value) to estimate an acceptable absolute error in campaign value.  This acceptable error rate is used to campaign sizes that ensure the campaign chosen has a good probability of being close to the best choice in terms of relative error.
+                       helpText("The purpose of the planning sheet is to use the user inputs (prior bounds on conversion rate and conversion value) to estimate an acceptable absolute error in campaign value.  This acceptable error rate is used to pick campaign sizes that ensure the campaign chosen has a good probability of being close to the best choice in terms of relative error.
   A good way to use this is to enter two different rates you wish to be able to distinguish between."),
                        helpText("Each row below is a campaign.  For each campaign we ask the user supply plausible (from pervious experience) lower bounds on the success rate (what fraction of actions return value) and the value per success assumed for the campaign."),
                        helpText("These controls help populate the Suggested Campaign Actions/Sizes panel and the Possible Values section."),
