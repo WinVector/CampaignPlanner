@@ -119,10 +119,10 @@ plotSample <- function(g,size=2) {
   ggplot(data=g) +
     geom_line(aes(x=value,y=density,color=Label,linetype=Label),size=size) +
     geom_ribbon(aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.1) +
-    xlab('Expected Value per Action (dollars)') +
+    xlab('Possible Observed Value per Action (dollars)') +
     scale_x_continuous(limits = c(wQuantile(g$value,g$density,0.001),
                                   wQuantile(g$value,g$density,0.999))) +
-    ggtitle('distribution of possible outcomes') +
+    ggtitle('Distribution of possible observed outcomes\n') +
     theme_bw()
 }
 
@@ -183,13 +183,13 @@ plotPosterior <- function(p,wishPrice=c(),size=2) {
   plot <- ggplot() +
     geom_line(data=p$graph,aes(x=value,y=density,color=Label,linetype=Label),size=size) +
     geom_ribbon(data=p$graph,aes(x=value,ymin=0,ymax=density,fill=Label),alpha=0.1) +
-    xlab('Action To Success Value (dollars)') +
+    xlab('Possible True Action To Success Value ratio (dollars)') +
     geom_vline(data=p$summary,aes(xintercept=median,color=Label)) +
     geom_point(data=p$summary,aes(x=mean,y=meanY,color=Label),shape=3) +
     geom_point(data=p$summary,aes(x=mode,y=modeY,color=Label),shape=2) +
     scale_x_continuous(limits = c(wQuantile(p$graph$value,p$graph$density,0.001),
                                   wQuantile(p$graph$value,p$graph$density,0.999))) +
-    ggtitle('Bayesian posterior action to success value estimates') +
+    ggtitle('Estimated Bayesian posterior distribution of\ntrue action to success value ratio estimates') +
     theme_bw()
   if(!is.null(wishPrice)) {
     shadeRows <- p$graph$value>=wishPrice
