@@ -55,7 +55,7 @@ shinyUI(fluidPage(
                                              min=0, max=10000))
                        ), # end fluidRow
                        hr(),
-                       helpText("Below the user is asked what probability (Error Probability) of mis-estimating each campaign ot more than a relative multiple (Relative Error) of the most valuable campaign and for a minimum number of observed successes/conversions goal.  These choices help populate the Suggested Campaign Actions/Sizes table."),
+                       helpText("Below the user is asked what probability (Error Probability) of mis-estimating each campaign ot more than a relative multiple (Relative Error) of the most valuable campaign and for a minimum number of observed successes/conversions goal.  These choices determine an appropriate absolute error rate (in dollars per action) for the problem and then help populate the Suggested Campaign Actions/Sizes table."),
                        fluidRow(
                          column(4,
                                 numericInput("errorProb", "Error Probability:", 0.05,
@@ -124,7 +124,7 @@ shinyUI(fluidPage(
                        h4("Posterior Probabilities"),
                        verbatimTextOutput("probTable"),
                        h4("Typical Outcome"), 
-                       helpText("This section simulates the evaluation sheet for the above campaings.  It shows for a given emprical obseration (drawn at random) from the user specified campaigs what distribution would the evaluation sheet estimate for the true values of the campaigns.  In practice the true values of the campaigs are the unknown quantities the evaluation sheet is trying to estimate.  In this simulation sheet the user should check if the values are near the values they specified often enough."),
+                       helpText("This section simulates the evaluation sheet for the above campaings.  It shows for a given emprical obseration (drawn at random) from the user specified campaigs what distribution would the evaluation sheet estimate for the true values of the campaigns.  In practice the true values of the campaigs are the unknown quantities the evaluation sheet is trying to estimate.  In this simulation sheet the user should check if the values observed are near the simulation values they specified often enough."),
                        actionButton("reseed", "Regenerate"),
                        verbatimTextOutput("typicalTable"),
                        plotOutput("planGraph2T"),
