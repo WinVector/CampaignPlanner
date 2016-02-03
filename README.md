@@ -1,13 +1,13 @@
 # CampaignPlanner
 Example code for Lesson on Response Campaign planning
-Course available (for free) at:
-  https://www.udemy.com/campaign-response-testing/
+
+Video course available (advertisement supported) at:
+  https://www.youtube.com/playlist?list=PLAKBwakacHbRRw278HMXpCsOOIIcLYGX5
+
+This is John Mount of Win-Vector LLCs mini-course on Bayesian A/B testing (complete with a RStudio Shiny worksheet).
 
 These materials:
   GPL 3 license, no warranty
-
-Notes on code and refernces:
-  https://github.com/WinVector/CampaignPlanner/Code.pdf
 
 Source code: https://github.com/WinVector/CampaignPlanner/
 App hosted online at: https://win-vector.shinyapps.io/CampaignPlanner/
