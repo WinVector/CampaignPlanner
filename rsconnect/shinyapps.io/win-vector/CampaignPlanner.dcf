@@ -1,0 +1,8 @@
+name: CampaignPlanner
+account: win-vector
+server: shinyapps.io
+bundleId: 365395
+url: https://win-vector.shinyapps.io/CampaignPlanner/
+when: 1454520670.66859
+asMultiple: FALSE
+asStatic: FALSE
