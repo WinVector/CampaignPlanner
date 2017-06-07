@@ -17,4 +17,4 @@ googleAuthR ggplot2 shiny shinythemes \
 && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 ## assume shiny app is in build folder /shiny
-COPY ./shiny/ /srv/shiny-server/AB_test/
+COPY ./shiny/ /srv/shiny-server/CampaignPlanner/
