@@ -14,4 +14,10 @@ App hosted online at: https://win-vector.shinyapps.io/CampaignPlanner/
 Newer (better) online app: https://win-vector.shinyapps.io/CampaignPlanner_v3/
 
 
+## Dockerized version
+This [fork repo](https://github.com/IronistM/CampaignPlanner) utilizes the [googleComputeEngineR](https://cloudyr.github.io/googleComputeEngineR/articles/shiny-app.html)  to package and deploy the shiny app into a Shiny Server hosted on Google Compute Engine. Each update of the app can further be deployed as a Docker.
+
+- The Docker file is extensible
+- A sample deployment script is bundled
+
 
